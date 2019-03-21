@@ -18,31 +18,13 @@ public class MAFrame  {
 
     }
 
-    public MAFrame() {
-        this.row = 25;
-        this.column = 20;
-        setCells(25,20);
-        setFramecount();
-    }
-
     public int getRow() {
         return row;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
 
     public int getColumn() {
         return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public Cell[][] getCells(int i, int j) {
-        return cells;
     }
 
     private void setCells(int row,int column) {

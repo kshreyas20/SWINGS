@@ -22,24 +22,6 @@ public class Cell {
     }
 
 
-    public Cell(String shape, String colour) {
-        setShape(shape);
-        setColour(colour);
-        this.shade = "NEUTRAL";
-        this.textfield = "NONE";
-        this.effects = false;
-        counter();
-    }
-
-    public Cell(String colour) {
-        this.shape = "SQUARE";
-        setColour(colour);
-        this.shade = "NEUTRAL";
-        this.textfield = "NONE";
-        this.effects = false;
-        counter();
-    }
-
     public Cell() {
         this.colour = "BLACK";
         this.shape = "SQUARE";
@@ -57,13 +39,8 @@ public class Cell {
 
     public void setShape(String shape) {
 
+            this.shape = "SQUARE"; // Enforcing the shape of the cell to Square - Button only supports Square shape
 
-        if(cellhelp.getShapes().contains(shape)){
-            this.shape = shape;
-        }
-        else{
-            this.shape = "SQUARE";
-        }
     }
 
     public String getColour() {
@@ -121,6 +98,7 @@ public class Cell {
     public void counter() {
         counter++;
     }
+
 
     public static int getCounter() {
         return counter;
