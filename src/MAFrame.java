@@ -67,6 +67,8 @@ public class MAFrame  {
          this.cells[rowindex][columnindex] = cell;
 
     }
+
+
     public Cell getCell (int rowindex,int columnindex){
 
         return this.cells[rowindex][columnindex];

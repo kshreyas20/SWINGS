@@ -10,7 +10,7 @@ public class MACellHelper {
 
     public MACellHelper() {
 
-        this.shapes = new ArrayList<String>(Arrays.asList("SQUARE","CIRCLE","TRIANGLE"));
+        this.shapes = new ArrayList<String>(Arrays.asList("SQUARE"));
         this.colours = new ArrayList<String>(Arrays.asList("WHITE","BLACK","RED","GREEN","BLUE","YELLOW"));
         this.shades = new ArrayList<String>(Arrays.asList("BRIGHT","DARK","NEUTRAL"));
     }
