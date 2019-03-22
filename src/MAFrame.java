@@ -64,7 +64,7 @@ public class MAFrame  {
 
     public void insertCell (Cell cell,int rowindex,int columnindex){
 
-        this.cells[rowindex][columnindex] = cell;
+         this.cells[rowindex][columnindex] = cell;
 
     }
     public Cell getCell (int rowindex,int columnindex){

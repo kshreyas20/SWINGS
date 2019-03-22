@@ -114,40 +114,39 @@ public class MAFrameSet {
         }
     }
 
-    public void pyramidpRule (MAFrame chframe) {
+    public void plusRule (MAFrame plusframe) {
 
-        Cell fhcell = new Cell("SQUARE", "RED", "DARK", "NONE", false);
-        chframe.insertCell(fhcell, 0, 0);
 
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0 ; j < 13; j++) {
+                MAFrameSet frameset = new MAFrameSet();
 
-                chframe.insertCell(new MARule().pyramidRule(chframe.getCell(i, j), i, j), i, j );
 
-                chframe.displaycell(i, j);
-            }
-            MAFrameSet frameset = new MAFrameSet ();
-            frameset.view(chframe);
-        }
+                for(int i=0;i<plusframe.getRow();i++){
+                    frameset.view(new MARule().plusRule(plusframe,i));
+                }
+
+
     }
+
 
 
 
         public static void main(String[] args) {
 
         MAFrameSet frameset = new MAFrameSet ();
-      /* MAFrame cframe = new MAFrame(8,8);
-        frameset.chessRule(cframe);
-       frameset.view(cframe);*/
+      //  MAFrame cframe = new MAFrame(8,8);
+       // frameset.chessRule(cframe);
+     //  frameset.view(cframe);
       /*  MAFrame chframe = new MAFrame(10,10);
         frameset.checkerRule(chframe);
         frameset.view(chframe);*/
-        MAFrame stepframe = new MAFrame(20,20);
-        frameset.stepRule(stepframe);
+       /* MAFrame stepframe = new MAFrame(20,20);
+        frameset.stepRule(stepframe);*/
         //frameset.view(stepframe);*/
          /*   MAFrame pyrframe = new MAFrame(13,13);
         frameset.pyramidpRule(pyrframe);*/
 
+            MAFrame plusframe = new MAFrame(9,9);
+            frameset.plusRule(plusframe);
 
     }
 

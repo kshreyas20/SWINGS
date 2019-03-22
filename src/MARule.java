@@ -1,102 +1,163 @@
 
 public class MARule  {
 
-    private int ruleset [] = {1,2};
+    private final String [] ruleSet = new String[]{"CHESS","CHECKERS","STEPS","PLUS"};
+    private String rule;
+    private String [] state;
 
 
+    public MARule(String rule) {
+        if(ruleSet.equals(rule)) {
+            this.rule = rule;
+            setState(rule);
+        }
+        else{
+            this.rule = "CHESS";
+            setState("CHESS");
+        }
+    }
 
-    public Cell chessRule(Cell cell,int rowindex,int columnindex){
+    public String[] getRuleSet() {
+        return ruleSet;
+    }
+
+
+    private void setState(String rule)
+    {
+        MACellHelper rulestate = new MACellHelper();
+        if(rule.equals("CHESS")){
+            this.state = new String [] {rulestate.getColours().get(1),rulestate.getColours().get(0)};
+        }
+        else if (rule.equals("CHECKERS")){
+            this.state = new String [] {rulestate.getColours().get(1),rulestate.getColours().get(3),rulestate.getColours().get(0)};
+        }
+        else if (rule.equals("STEPS")){
+            this.state = new String [] {rulestate.getColours().get(1),rulestate.getColours().get(4),rulestate.getColours().get(0)};
+        }
+        else if(rule.equals("PLUS")){
+            this.state = new String [] {rulestate.getColours().get(2),rulestate.getColours().get(1)};
+        }
+        else{
+            this.state = new String [] {rulestate.getColours().get(1)};
+        }
+    }
+
+
+    public Cell getNewCell(Cell cell,int rowindex,int columnindex){
+
+        Cell newcell = new Cell();
+        if (this.rule.equals("CHESS")){
+
+            newcell=chessRule(cell,rowindex,columnindex);
+        }
+        else if(this.rule.equals("CHECKERS")){
+
+            newcell=stepRule(cell,rowindex,columnindex);
+        }
+        else if(this.rule.equals("STEPS")){
+
+            newcell=stepRule(cell,rowindex,columnindex);
+        }
+        else {
+            newcell= cell;
+        }
+        return newcell;
+    }
+
+
+    private Cell chessRule(Cell cell, int rowindex, int columnindex){
 
 
         Cell newcell = new Cell();
-
         if(rowindex%2 == 0 && columnindex ==0 ){
-            newcell.setColour("WHITE");
+            newcell.setColour(this.state[1]);
         }
         else if(rowindex%2 != 0 && columnindex ==0 ){
-            newcell.setColour("BLACK");
+            newcell.setColour(this.state[0]);
         }
 
         else {
-            if (cell.getColour().equals("BLACK")) {
+            if (cell.getColour().equals(this.state[0])) {
 
-                newcell.setColour("WHITE");
+                newcell.setColour(this.state[1]);
             } else {
 
-                newcell.setColour("BLACK");
+                newcell.setColour(this.state[0]);
             }
         }
         return newcell;
     }
 
-    public Cell checkersRule(Cell cell,int rowindex,int columnindex){
+    private Cell checkersRule(Cell cell,int rowindex,int columnindex){
 
 
         Cell newcell = new Cell();
 
         if(rowindex%2 == 0 && columnindex ==0 ){
-            newcell.setColour("WHITE");
+            newcell.setColour(this.state[2]);
         }
         else if(rowindex%2 != 0 && columnindex ==0 ){
-            newcell.setColour("GREEN");
+            newcell.setColour(this.state[1]);
         }
 
         else {
-            if (cell.getColour().equals("GREEN")) {
-                // newcell = cell;
-                newcell.setColour("WHITE");
+            if (cell.getColour().equals(this.state[1])) {
+                newcell.setColour(this.state[2]);
             } else {
-                // newcell = cell;
-                newcell.setColour("GREEN");
+                newcell.setColour(this.state[1]);
             }
         }
         return newcell;
     }
 
-    public Cell stepRule(Cell cell,int rowindex,int columnindex){
+    private Cell stepRule(Cell cell,int rowindex,int columnindex){
 
 
         Cell newcell = new Cell();
 
         if(rowindex > columnindex ){
-            newcell.setColour("BLUE");
+            newcell.setColour(this.state[1]);
         }
         else {
-            newcell.setColour("WHITE");
+            newcell.setColour(this.state[2]);
         }
 
         return newcell;
     }
 
-    public Cell pyramidRule(Cell cell,int rowindex,int columnindex){
+    private MAFrame plusRule(MAFrame frame,int iteration){
 
 
-        Cell newcell = new Cell();
 
-        if(rowindex <5 && columnindex <5){
-            newcell.setColour("GREEN");
-        }
-        else if (rowindex <5 && columnindex >8) {
-            newcell.setColour("BLUE");
+        if(iteration == 0){
+            frame.insertCell((new Cell("SQUARE", "RED", "DARK", "NONE", false)),frame.getRow()/2,frame.getColumn()/2);
         }
 
-        return newcell;
+        else {
+           for(int i=0;i<iteration;i++) {
+               for (int k = 0; k < frame.getRow()-1; k++) {
+                   for (int l = 0; l < frame.getColumn()-1; l++) {
+
+                       if (frame.getCell(k, l).getColour().equals("RED")) {
+
+                           frame.insertCell((new Cell("SQUARE", "RED", "DARK", "NONE", false)), k + 1, l);
+                           frame.insertCell((new Cell("SQUARE", "RED", "DARK", "NONE", false)), k - 1, l);
+                           frame.insertCell((new Cell("SQUARE", "RED", "DARK", "NONE", false)), k, l + 1);
+                           frame.insertCell((new Cell("SQUARE", "RED", "DARK", "NONE", false)), k, l - 1);
+
+                           k = frame.getRow();
+                           l = frame.getColumn();
+                       }
+                   }
+               }
+           }
+        }
+
+
+
+        return frame;
+
     }
-
-
-
-    public Cell getCellState(MAFrame frame,int row,int column){
-
-        return frame.getCell(row,column);
-    }
-
-    public void setCellState(MAFrame frame,Cell cell,int row,int column){
-
-        frame.insertCell(cell,row,column);
-
-    }
-
-
 
 
 }

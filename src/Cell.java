@@ -2,7 +2,7 @@
 
 public class Cell {
 
-    private static MACellHelper cellhelp = new MACellHelper();
+    private static final MACellHelper cellhelp = new MACellHelper();
     private String shape;
     private String colour;
     private String shade;

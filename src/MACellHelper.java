@@ -4,15 +4,9 @@ import java.util.Arrays;
 
 public class MACellHelper {
 
-    private ArrayList<String> shapes;
-    private ArrayList<String> colours;
-    private ArrayList<String> shades;
-
-    public MACellHelper(ArrayList<String> shapes, ArrayList<String> colours, ArrayList<String> shades) {
-        this.shapes = shapes;
-        this.colours = colours;
-        this.shades = shades;
-    }
+    private final ArrayList<String> shapes;
+    private final ArrayList<String> colours;
+    private final ArrayList<String> shades;
 
     public MACellHelper() {
 
@@ -25,25 +19,12 @@ public class MACellHelper {
         return shapes;
     }
 
-    public void setShapes(ArrayList<String> shapes) {
-        this.shapes = shapes;
-    }
-
     public ArrayList<String> getColours() {
         return colours;
-    }
-
-    public void setColours(ArrayList<String> colours) {
-        this.colours = colours;
     }
 
     public ArrayList<String> getShades() {
         return shades;
     }
-
-    public void setShades(ArrayList<String> shades) {
-        this.shades = shades;
-    }
-
 
 }
