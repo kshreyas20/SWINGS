@@ -148,6 +148,21 @@ public class MAFrameSet {
         frames.view(frames.framearray.get(numberOfFrame));
     }
 
+    public static void mobiledisplay2(int numberOfFrame){
+
+        MARule mobilerule2 = new MARule("MOBILE2");
+        MAFrameSet frames = new MAFrameSet ();
+        frames.framearray.add(0,new MAFrame(numberOfFrame,5));
+
+        for (int i=0;i<numberOfFrame;i++)
+        {
+            frames.framearray.add(i+1,mobilerule2.getNewframe(frames.framearray.get(i),i));
+            // frames.view(frames.framearray.get(i));
+
+        }
+        frames.view(frames.framearray.get(numberOfFrame));
+    }
+
         public static void main(String[] args) {
 
 
@@ -155,6 +170,7 @@ public class MAFrameSet {
          //stepisplay(10);
              //pyramidisplay(31);
             mobiledisplay(60);
+ //           mobiledisplay2(60);
 
 
 

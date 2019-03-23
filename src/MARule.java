@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class MARule  {
 
-    private final static ArrayList<String> ruleSet = new ArrayList<String>(Arrays.asList("CHESS","STEPS","PYRAMID","MOBILE"));
+    private final static ArrayList<String> ruleSet = new ArrayList<String>(Arrays.asList("CHESS","STEPS","PYRAMID","MOBILE","MOBILE2"));
     private String rule;
     private String [] state;
 
@@ -38,6 +38,9 @@ public class MARule  {
         else if(rule.equals("MOBILE")){
             this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)};
         }
+        else if(rule.equals("MOBILE2")){
+            this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)};
+        }
         else{
             this.state = new String [] {rulestate.getColours().get(1)};
         }
@@ -62,6 +65,10 @@ public class MARule  {
         else if(this.rule.equals("MOBILE")){
 
             newframe=mobileRule(frame,iteration);
+        }
+        else if(this.rule.equals("MOBILE2")){
+
+            newframe=mobileRule2(frame,iteration);
         }
         else {
             newframe= frame;
@@ -293,6 +300,68 @@ public class MARule  {
     }
 
 
+    private MAFrame mobileRule2 (MAFrame frame,int iteration) {
+
+        Random random = new Random();
+
+        if(iteration == 0) {
+
+
+            for (int i = 0; i < frame.getRow() + 1; i++) {
+                for (int j = 0; j < frame.getColumn(); j++) {
+                    int value = random.nextInt(2);
+                    if(value == 1) {
+                        frame.insertCell(new Cell("SQUARE", this.state[2], "NEUTRAL", "NONE", false), i, j);
+                        frame.displaycell(i, j);
+                    }
+                    else{
+                        frame.insertCell(new Cell("SQUARE", this.state[0], "NEUTRAL", "NONE", false), i, j);
+                        frame.displaycell(i, j);
+                    }
+
+                }
+
+            }
+            frame.getCell(0,frame.getColumn()/2).setTextfield("X");
+        }
+        else if (iteration == 1){
+            frame.getCell(1,frame.getColumn()/2).setTextfield("X");
+        }
+        else {
+
+            int[] position = new int[2];
+
+            for (int i = iteration-1; i < iteration; i++) {
+                for (int j = 0; j < frame.getColumn(); j++) {
+
+                    System.out.println("==>" + i + " " + j);
+                    if (frame.getCell(i, j).getTextfield().equals(frame.getCell(1,frame.getColumn()/2).getTextfield())) {
+                        if(frame.getColumn() == 1){
+                            position[0] = 1;
+                            position[1] = 0;
+                        }
+                        else if( j ==0 ){
+                            position[0] = 1;
+                            position[1] = 1;
+                        }
+                        else if(j == frame.getColumn()-1){
+                            position[0] = 1;
+                            position[1] = -1;
+                        }
+
+                        else {
+                            position = MobileCellRule2(frame.getCell(i + 1, j).getColour(), frame.getCell(i - 1, j).getColour(),frame.getCell(i, j + 1).getColour(), frame.getCell(i, j - 1).getColour());
+                        }
+                        frame.getCell(i + position[0], j + position[1]).setTextfield(frame.getCell(1,frame.getColumn()/2).getTextfield());
+                        frame.displaycell(i + position[0], j + position[1]);
+                        System.out.println("break==>" + (i + position[0]) + " " + (j + position[1]));
+                    }
+                }
+            }
+        }
+        return frame;
+    }
+
     private int[] MobileCellRule2(String LowerColour,String UpperColour ,String rightColour, String leftColour){
 
         int [] position = new int[2];
@@ -332,42 +401,42 @@ public class MARule  {
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("YELLOW") && rightColour.equals("YELLOW") && LowerColour.equals("YELLOW")){
 
-            position[0] =-1;
+            position[0] =1;
             position[1] = -1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("YELLOW") && rightColour.equals("YELLOW") && LowerColour.equals("WHITE")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = -1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("YELLOW") && rightColour.equals("WHITE") && LowerColour.equals("YELLOW")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = 1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("YELLOW") && rightColour.equals("WHITE") && LowerColour.equals("WHITE")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = 1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("WHITE") && rightColour.equals("YELLOW") && LowerColour.equals("YELLOW")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = 1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("WHITE") && rightColour.equals("YELLOW") && LowerColour.equals("WHITE")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = 1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("WHITE") && rightColour.equals("WHITE") && LowerColour.equals("YELLOW")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = -1;
         }
         else if (UpperColour.equals("WHITE") && leftColour.equals("WHITE") && rightColour.equals("WHITE") && LowerColour.equals("WHITE")){
-            position[0] = -1;
+            position[0] = 1;
             position[1] = -1;
         }
         else{
             position[0] = 1;
             position[1] = 0;
         }
-        
+
         System.out.println(position[0]+" "+position[1]);
         return position;
     }
