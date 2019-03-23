@@ -15,17 +15,17 @@ public class MAFrameSet {
 
         JFrame frame = new JFrame();
         frame.setTitle("Demonstrate valid 2D Mobile Automata");
-        frame.setSize(400, 400);
+        frame.setSize(400, 800);
         frame.setLocation(xaxis, yaxis);
         frame.setResizable(true);
         frame.setLayout(new GridLayout(displayFrame.getRow(), displayFrame.getColumn()));
         frame.setBackground(Color.BLACK);
 
-        System.out.print("======display=======");
+       // System.out.print("======display=======");
         for (int i = 0; i < displayFrame.getRow(); i++) {
             for (int j = 0; j < displayFrame.getColumn(); j++) {
 
-                System.out.println(i + " " + j + displayFrame.getCell(i, j).getColour());
+                //System.out.println(i + " " + j + displayFrame.getCell(i, j).getColour());
                 JButton button = new JButton();
                 if (displayFrame.getCell(i, j).getShade().equals("DARK")) {
                     if (displayFrame.getCell(i, j).getColour().equals("BLACK")) {
@@ -97,36 +97,68 @@ public class MAFrameSet {
         frames.framearray.add(new MAFrame(numberOfFrame,numberOfFrame));
         for (int i=0;i<numberOfFrame;i++)
         {
-            frames.framearray.add(chessrule.getNewframe(frames.framearray.get(i),i));
+            frames.framearray.add(i+1,chessrule.getNewframe(frames.framearray.get(i),i));
             frames.view(frames.framearray.get(i));
 
         }
 
     }
 
+    public static void stepisplay(int numberOfFrame){
 
+        MARule steprule = new MARule("STEPS");
+        MAFrameSet frames = new MAFrameSet ();
+        frames.framearray.add(new MAFrame(numberOfFrame,numberOfFrame));
+        for (int i=0;i<numberOfFrame;i++)
+        {
+            frames.framearray.add(i+1,steprule.getNewframe(frames.framearray.get(i),i));
+            frames.view(frames.framearray.get(i));
 
+        }
+
+    }
+
+    public static void pyramidisplay(int numberOfFrame){
+
+        MARule pyramidrule = new MARule("PYRAMID");
+        MAFrameSet frames = new MAFrameSet ();
+        frames.framearray.add(0,new MAFrame(numberOfFrame,numberOfFrame));
+
+        for (int i=0;i<numberOfFrame;i++)
+        {
+            frames.framearray.add(i+1,pyramidrule.getNewframe(frames.framearray.get(i),i));
+           //frames.view(frames.framearray.get(i));
+
+        }
+
+    }
+
+    public static void mobiledisplay(int numberOfFrame){
+
+        MARule mobilerule = new MARule("MOBILE");
+        MAFrameSet frames = new MAFrameSet ();
+        frames.framearray.add(0,new MAFrame(numberOfFrame,20));
+
+        for (int i=0;i<numberOfFrame;i++)
+        {
+            frames.framearray.add(i+1,mobilerule.getNewframe(frames.framearray.get(i),i));
+           // frames.view(frames.framearray.get(i));
+
+        }
+        frames.view(frames.framearray.get(numberOfFrame));
+    }
 
         public static void main(String[] args) {
 
 
-        chessdisplay(16);
+        //chessdisplay(8);
+         //stepisplay(10);
+             //pyramidisplay(31);
+            mobiledisplay(60);
 
 
-      //  MAFrame cframe = new MAFrame(8,8);
-       // frameset.chessRule(cframe);
-     //  frameset.view(cframe);
-      /*  MAFrame chframe = new MAFrame(10,10);
-        frameset.checkerRule(chframe);
-        frameset.view(chframe);*/
-       /* MAFrame stepframe = new MAFrame(20,20);
-        frameset.stepRule(stepframe);*/
-        //frameset.view(stepframe);*/
-         /*   MAFrame pyrframe = new MAFrame(13,13);
-        frameset.pyramidpRule(pyrframe);*/
 
-          /*  MAFrame plusframe = new MAFrame(9,9);
-            frameset.plusRule(plusframe);*/
+
 
     }
 

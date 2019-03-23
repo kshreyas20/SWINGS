@@ -1,10 +1,8 @@
-import java.util.HashMap;
-
 public class MAFrame  {
 
     private int row;
     private int column;
-    private Cell cells [] [] = new Cell[100][100];
+    private Cell[][] cells = new Cell[200][200];
     private static int framecount = 0;
     private String title;
 

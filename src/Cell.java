@@ -31,15 +31,6 @@ public class Cell {
         counter();
     }
 
-    public Cell(String colour) {
-        this.shape = "SQUARE";
-        setColour(colour);
-        this.shade = "NEUTRAL";
-        this.textfield = "NONE";
-        this.effects = false;
-        counter();
-    }
-
     public Cell() {
         this.colour = "BLACK";
         this.shape = "SQUARE";
@@ -55,7 +46,7 @@ public class Cell {
         return shape;
     }
 
-    public void setShape(String shape) {
+    private void setShape(String shape) {
 
 
         if(cellhelp.getShapes().contains(shape)){
@@ -84,7 +75,7 @@ public class Cell {
         return shade;
     }
 
-    public void setShade(String shade) {
+    private void setShade(String shade) {
 
 
         if(cellhelp.getShades().contains(shade)){
@@ -118,7 +109,7 @@ public class Cell {
         this.effects = effects;
     }
 
-    public void counter() {
+    private void counter() {
         counter++;
     }
 
