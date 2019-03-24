@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
-import java.util.Scanner;
+
 
 public class MAFrameSet {
 
@@ -27,11 +27,11 @@ public class MAFrameSet {
      Graphical display of the Frame
                 MAFrame => JFrame
                 Cell => button
-                States => Colour Text etc are used to represent the active cell
+                States => Colour/Text etc are used to represent the active cell
 
      */
 
-    public void view (MAFrame displayFrame) {
+    private void view(MAFrame displayFrame) {
 
 
 
@@ -51,49 +51,70 @@ public class MAFrameSet {
                 System.out.print(displayFrame.getCell(i, j).getColour()+"       "); // Currently display colour (no text => MOBILE2 case)
                 JButton button = new JButton();
                 if (displayFrame.getCell(i, j).getShade().equals("DARK")) {
-                    if (displayFrame.getCell(i, j).getColour().equals("BLACK")) {
-                        button.setBackground(Color.BLACK.darker());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("WHITE")) {
-                        button.setBackground(Color.WHITE.darker());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("GREEN")) {
-                        button.setBackground(Color.GREEN.darker());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("BLUE")) {
-                        button.setBackground(Color.BLUE.darker());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("RED")) {
-                        button.setBackground(Color.RED.darker());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("YELLOW")) {
-                        button.setBackground(Color.YELLOW.darker());
+                    switch (displayFrame.getCell(i, j).getColour()) {
+                        case "BLACK":
+                            button.setBackground(Color.BLACK.darker());
+                            break;
+                        case "WHITE":
+                            button.setBackground(Color.WHITE.darker());
+                            break;
+                        case "GREEN":
+                            button.setBackground(Color.GREEN.darker());
+                            break;
+                        case "BLUE":
+                            button.setBackground(Color.BLUE.darker());
+                            break;
+                        case "RED":
+                            button.setBackground(Color.RED.darker());
+                            break;
+                        case "YELLOW":
+                            button.setBackground(Color.YELLOW.darker());
+                            break;
                     }
 
                 } else if (displayFrame.getCell(i, j).getShade().equals("BRIGHT")) {
-                    if (displayFrame.getCell(i, j).getColour().equals("BLACK")) {
-                        button.setBackground(Color.BLACK.brighter());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("WHITE")) {
-                        button.setBackground(Color.WHITE.brighter());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("GREEN")) {
-                        button.setBackground(Color.GREEN.brighter());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("BLUE")) {
-                        button.setBackground(Color.BLUE.brighter());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("RED")) {
-                        button.setBackground(Color.RED.brighter());
-                    } else if (displayFrame.getCell(i, j).getColour().equals("YELLOW")) {
-                        button.setBackground(Color.YELLOW.brighter());
+                    switch (displayFrame.getCell(i, j).getColour()) {
+                        case "BLACK":
+                            button.setBackground(Color.BLACK.brighter());
+                            break;
+                        case "WHITE":
+                            button.setBackground(Color.WHITE.brighter());
+                            break;
+                        case "GREEN":
+                            button.setBackground(Color.GREEN.brighter());
+                            break;
+                        case "BLUE":
+                            button.setBackground(Color.BLUE.brighter());
+                            break;
+                        case "RED":
+                            button.setBackground(Color.RED.brighter());
+                            break;
+                        case "YELLOW":
+                            button.setBackground(Color.YELLOW.brighter());
+                            break;
                     }
 
                 } else {
-                    if (displayFrame.getCell(i, j).getColour().equals("BLACK")) {
-                        button.setBackground(Color.BLACK);
-                    } else if (displayFrame.getCell(i, j).getColour().equals("WHITE")) {
-                        button.setBackground(Color.WHITE);
-                    } else if (displayFrame.getCell(i, j).getColour().equals("GREEN")) {
-                        button.setBackground(Color.GREEN);
-                    } else if (displayFrame.getCell(i, j).getColour().equals("BLUE")) {
-                        button.setBackground(Color.BLUE);
-                    } else if (displayFrame.getCell(i, j).getColour().equals("RED")) {
-                        button.setBackground(Color.RED);
-                    } else if (displayFrame.getCell(i, j).getColour().equals("YELLOW")) {
-                        button.setBackground(Color.YELLOW);
+                    switch (displayFrame.getCell(i, j).getColour()) {
+                        case "BLACK":
+                            button.setBackground(Color.BLACK);
+                            break;
+                        case "WHITE":
+                            button.setBackground(Color.WHITE);
+                            break;
+                        case "GREEN":
+                            button.setBackground(Color.GREEN);
+                            break;
+                        case "BLUE":
+                            button.setBackground(Color.BLUE);
+                            break;
+                        case "RED":
+                            button.setBackground(Color.RED);
+                            break;
+                        case "YELLOW":
+                            button.setBackground(Color.YELLOW);
 
+                            break;
                     }
                     button.setOpaque(true);
                     button.setBorderPainted(false);
@@ -145,14 +166,18 @@ public class MAFrameSet {
 
     public void displayGUI(int numberOfFrame){
 
-        try {
-            for (int i = 0; i < numberOfFrame; i++) {
-                this.view(this.framearray.get(i));
+        if(numberOfFrame > 0) {
+            try {
+                for (int i = 0; i < numberOfFrame; i++) {
+                    this.view(this.framearray.get(i));
 
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Index is more than in arraylist");
             }
         }
-        catch (IndexOutOfBoundsException e){
-            System.out.println("Index is more than in arraylist");
+        else {
+            System.out.println("number of frame to display less than zero or zero");
         }
 
     }
@@ -166,36 +191,38 @@ public class MAFrameSet {
         System.out.println("Rule list");
         System.out.println(MARule.ruleSet);
 
-        /*
+
         MARule chessrule = new MARule("CHESS");
         frames.insertFrame(8,chessrule);
         frames.displayGUI(8);
-        */
-        /*
+
+
+
        MARule steprule = new MARule("STEPS");
        frames.insertFrame(20,steprule);
        frames.displayGUI(20);
-       */
 
-        /*
+
+
+
         MARule pyramidrule = new MARule("PYRAMID");
         frames.insertFrame(11,pyramidrule);
         frames.displayGUI(11);
-        */
 
 
-        /*
+
+
         MARule mobilerule = new MARule("MOBILE");
         frames.insertFrame(8,mobilerule);
         frames.displayGUI(8);
-        */
 
 
-        /*
+
+
         MARule mobilerule2 = new MARule("MOBILE2");
         frames.insertFrame(10,mobilerule2);
         frames.displayGUI(10);
-        */
+
 
 
 
