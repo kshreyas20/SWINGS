@@ -1,12 +1,24 @@
 
+//package edu.neu.csye6200.ma;
+
+/*
+Create a  MACell helper class which defines the state of a cell
+
+Solution:
+This is a helper class for "CELL CLASS" . it restrict the states of the cell object By controlling the values assigned to
+cell instant  variable .
+*/
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MACellHelper {
 
-    private final ArrayList<String> shapes;
-    private final ArrayList<String> colours;
-    private final ArrayList<String> shades;
+    private final ArrayList<String> shapes;  // List of shapes cell can take.
+    private final ArrayList<String> colours; // List of colours cell can portray
+    private final ArrayList<String> shades; // List of scales cell can project
+
+    // Default constructor to define the list which limit the state of the Cell class
 
     public MACellHelper() {
 
@@ -14,6 +26,8 @@ public class MACellHelper {
         this.colours = new ArrayList<String>(Arrays.asList("WHITE","BLACK","RED","GREEN","BLUE","YELLOW"));
         this.shades = new ArrayList<String>(Arrays.asList("BRIGHT","DARK","NEUTRAL"));
     }
+
+    // These getter methods are used in CELL class or RULE class to define or limit the state of the cell
 
     public ArrayList<String> getShapes() {
         return shapes;

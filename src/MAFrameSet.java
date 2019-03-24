@@ -1,31 +1,55 @@
+//package edu.neu.csye6200.ma;
+
+/*
+Create a  MAFrameSet that holds multiple  MAFrames and can call the  MARule class repeatedly to evolve successive  MAFrames
+
+Solution:
+Arraylist is created to hold the frames in a list .
+Everytime for New Frame to be created old frame is passed to Rule object to get the next frame .
+ */
+
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class MAFrameSet {
 
-    private ArrayList<MAFrame> framearray = new ArrayList<>();
-    private static int yaxis = 0;
-    private static int xaxis = 0;
+    private ArrayList<MAFrame> framearray = new ArrayList<>(); // List to hold the frame -> This can be used to
+    private static int yaxis = 0; // Position of GUI index
+    private static int xaxis = 0; // Position of GUI index
+
+
+
+    /*
+     Graphical display of the Frame
+                MAFrame => JFrame
+                Cell => button
+                States => Colour Text etc are used to represent the active cell
+
+     */
 
     public void view (MAFrame displayFrame) {
 
 
+
         JFrame frame = new JFrame();
         frame.setTitle("Demonstrate valid 2D Mobile Automata");
-        frame.setSize(400, 800);
+        frame.setSize(600,600);
         frame.setLocation(xaxis, yaxis);
         frame.setResizable(true);
         frame.setLayout(new GridLayout(displayFrame.getRow(), displayFrame.getColumn()));
         frame.setBackground(Color.BLACK);
 
-       // System.out.print("======display=======");
+        System.out.print("======display=======");
+        System.out.println("");
         for (int i = 0; i < displayFrame.getRow(); i++) {
             for (int j = 0; j < displayFrame.getColumn(); j++) {
 
-                //System.out.println(i + " " + j + displayFrame.getCell(i, j).getColour());
+                System.out.print(displayFrame.getCell(i, j).getColour()+"       "); // Currently display colour (no text => MOBILE2 case)
                 JButton button = new JButton();
                 if (displayFrame.getCell(i, j).getShade().equals("DARK")) {
                     if (displayFrame.getCell(i, j).getColour().equals("BLACK")) {
@@ -81,96 +105,99 @@ public class MAFrameSet {
                     frame.add(button);
                 }
             }
+            System.out.println("");
             frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // If you click on close all the frames will closed
             yaxis = yaxis + 50;
             xaxis = xaxis + 50;
         }
+        System.out.println("=====END======");
+        System.out.println("");
+
+    }
+
+    /*
+        Inserting frame to framset for each iteration
+        Rule is determines the frame pattern
+        NumberOfFrame is equal to NumberofRows and Numberof Columns
+     */
+    public void insertFrame(int numberOfFrame,MARule rule){
+
+        this.framearray.clear();
+        if(numberOfFrame < 100) {
+
+            this.framearray.add(new MAFrame(numberOfFrame, numberOfFrame));
+            for (int i = 0; i < numberOfFrame; i++) {
+                MAFrame frame = rule.getNewframe(this.framearray.get(i), i);
+                MAFrame newframe = new MAFrame(numberOfFrame, numberOfFrame);
+                newframe.setCells(frame.getCells());
+                this.framearray.add(newframe);
+
+            }
+        }
+        else {
+            System.out.println("Number of frameset selected is beyond 100");
+        }
 
 
     }
 
-    public static void chessdisplay(int numberOfFrame){
+    // Display the frame in JFrame as well as in console
 
+    public void displayGUI(int numberOfFrame){
+
+        try {
+            for (int i = 0; i < numberOfFrame; i++) {
+                this.view(this.framearray.get(i));
+
+            }
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println("Index is more than in arraylist");
+        }
+
+    }
+
+
+
+    public static void main(String[] args) {
+
+
+        MAFrameSet frames = new MAFrameSet ();
+        System.out.println("Rule list");
+        System.out.println(MARule.ruleSet);
+
+        /*
         MARule chessrule = new MARule("CHESS");
-        MAFrameSet frames = new MAFrameSet ();
-        frames.framearray.add(new MAFrame(numberOfFrame,numberOfFrame));
-        for (int i=0;i<numberOfFrame;i++)
-        {
-            frames.framearray.add(i+1,chessrule.getNewframe(frames.framearray.get(i),i));
-            frames.view(frames.framearray.get(i));
+        frames.insertFrame(8,chessrule);
+        frames.displayGUI(8);
+        */
+        /*
+       MARule steprule = new MARule("STEPS");
+       frames.insertFrame(20,steprule);
+       frames.displayGUI(20);
+       */
 
-        }
-
-    }
-
-    public static void stepisplay(int numberOfFrame){
-
-        MARule steprule = new MARule("STEPS");
-        MAFrameSet frames = new MAFrameSet ();
-        frames.framearray.add(new MAFrame(numberOfFrame,numberOfFrame));
-        for (int i=0;i<numberOfFrame;i++)
-        {
-            frames.framearray.add(i+1,steprule.getNewframe(frames.framearray.get(i),i));
-            frames.view(frames.framearray.get(i));
-
-        }
-
-    }
-
-    public static void pyramidisplay(int numberOfFrame){
-
+        /*
         MARule pyramidrule = new MARule("PYRAMID");
-        MAFrameSet frames = new MAFrameSet ();
-        frames.framearray.add(0,new MAFrame(numberOfFrame,numberOfFrame));
+        frames.insertFrame(11,pyramidrule);
+        frames.displayGUI(11);
+        */
 
-        for (int i=0;i<numberOfFrame;i++)
-        {
-            frames.framearray.add(i+1,pyramidrule.getNewframe(frames.framearray.get(i),i));
-           //frames.view(frames.framearray.get(i));
 
-        }
-
-    }
-
-    public static void mobiledisplay(int numberOfFrame){
-
+        /*
         MARule mobilerule = new MARule("MOBILE");
-        MAFrameSet frames = new MAFrameSet ();
-        frames.framearray.add(0,new MAFrame(numberOfFrame,20));
+        frames.insertFrame(8,mobilerule);
+        frames.displayGUI(8);
+        */
 
-        for (int i=0;i<numberOfFrame;i++)
-        {
-            frames.framearray.add(i+1,mobilerule.getNewframe(frames.framearray.get(i),i));
-           // frames.view(frames.framearray.get(i));
 
-        }
-        frames.view(frames.framearray.get(numberOfFrame));
-    }
-
-    public static void mobiledisplay2(int numberOfFrame){
-
+        /*
         MARule mobilerule2 = new MARule("MOBILE2");
-        MAFrameSet frames = new MAFrameSet ();
-        frames.framearray.add(0,new MAFrame(numberOfFrame,5));
+        frames.insertFrame(10,mobilerule2);
+        frames.displayGUI(10);
+        */
 
-        for (int i=0;i<numberOfFrame;i++)
-        {
-            frames.framearray.add(i+1,mobilerule2.getNewframe(frames.framearray.get(i),i));
-            // frames.view(frames.framearray.get(i));
-
-        }
-        frames.view(frames.framearray.get(numberOfFrame));
-    }
-
-        public static void main(String[] args) {
-
-
-        //chessdisplay(8);
-         //stepisplay(10);
-             //pyramidisplay(31);
-            mobiledisplay(60);
- //           mobiledisplay2(60);
 
 
 
