@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MAFrameSet {

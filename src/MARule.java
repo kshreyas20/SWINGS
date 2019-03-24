@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class MARule  {
 
-    public final static ArrayList<String> ruleSet = new ArrayList<String>(Arrays.asList("CHESS","STEPS","PYRAMID","MOBILE","MOBILE2")); // RULE list which Frame Set will use to display the
+    public final static ArrayList<String> ruleSet = new ArrayList<>(Arrays.asList("CHESS", "STEPS", "PYRAMID", "MOBILE", "MOBILE2")); // RULE list which Frame Set will use to display the
     private String rule; // FrameSet use this variable select the rule type
     private String [] state; //  Once the Rule is selcted -> Privately State are allocated. Currently we are dealing with COLOUR of the cells
 

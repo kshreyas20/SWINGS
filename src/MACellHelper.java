@@ -22,9 +22,9 @@ public class MACellHelper {
 
     public MACellHelper() {
 
-        this.shapes = new ArrayList<String>(Arrays.asList("SQUARE"));
-        this.colours = new ArrayList<String>(Arrays.asList("WHITE","BLACK","RED","GREEN","BLUE","YELLOW"));
-        this.shades = new ArrayList<String>(Arrays.asList("BRIGHT","DARK","NEUTRAL"));
+        this.shapes = new ArrayList<>(Arrays.asList("SQUARE"));
+        this.colours = new ArrayList<>(Arrays.asList("WHITE", "BLACK", "RED", "GREEN", "BLUE", "YELLOW"));
+        this.shades = new ArrayList<>(Arrays.asList("BRIGHT", "DARK", "NEUTRAL"));
     }
 
     // These getter methods are used in CELL class or RULE class to define or limit the state of the cell
