@@ -13,6 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.PrintStream;
 
 
 public class MAFrameSet {
@@ -49,7 +53,7 @@ public class MAFrameSet {
             for (int j = 0; j < displayFrame.getColumn(); j++) {
 
                 System.out.print(displayFrame.getCell(i, j).getColour()+"       "); // Currently display colour (no text => MOBILE2 case)
-                JButton button = new JButton();
+               JButton button = new JButton();
                 if (displayFrame.getCell(i, j).getShade().equals("DARK")) {
                     switch (displayFrame.getCell(i, j).getColour()) {
                         case "BLACK":
@@ -125,11 +129,11 @@ public class MAFrameSet {
                     frame.add(button);
                 }
             }
-            System.out.println("");
+           System.out.println("");
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // If you click on close all the frames will closed
-            yaxis = yaxis + 50;
-            xaxis = xaxis + 50;
+            yaxis = yaxis + 5;
+            xaxis = xaxis + 5;
         }
         System.out.println("=====END======");
         System.out.println("");
@@ -141,22 +145,32 @@ public class MAFrameSet {
         Rule is determines the frame pattern
         NumberOfFrame is equal to NumberofRows and Numberof Columns
      */
-    public void insertFrame(int numberOfFrame,MARule rule){
+    public void insertFrame(int numberOfFrame,MARule rule,int delay){
 
-        this.framearray.clear();
-        if(numberOfFrame < 100) {
+        try {
+            this.framearray.clear();
+            if (numberOfFrame < 100) {
 
-            this.framearray.add(new MAFrame(numberOfFrame, numberOfFrame));
-            for (int i = 0; i < numberOfFrame; i++) {
-                MAFrame frame = rule.getNewframe(this.framearray.get(i), i);
-                MAFrame newframe = new MAFrame(numberOfFrame, numberOfFrame);
-                newframe.setCells(frame.getCells());
-                this.framearray.add(newframe);
 
+                this.framearray.add(new MAFrame(numberOfFrame, numberOfFrame));
+
+                for (int i = 0; i < numberOfFrame; i++) {
+                    MAFrame frame = rule.getNewframe(this.framearray.get(i), i);
+                    MAFrame newframe = new MAFrame(numberOfFrame, numberOfFrame);
+                    newframe.setCells(frame.getCells());
+                    this.framearray.add(newframe);
+                    System.out.println("frames" + i);
+                   // this.view(this.framearray.get(i));
+                    Thread.sleep(1000*delay);
+                }
             }
-        }
-        else {
-            System.out.println("Number of frameset selected is beyond 100");
+
+            else {
+                System.out.println("Number of frameset selected is beyond 100");
+            }
+        }catch (InterruptedException e){
+
+            System.out.println("Thread Sleep Interupted Exception");
         }
 
 
@@ -182,50 +196,150 @@ public class MAFrameSet {
 
     }
 
+    public static void ruleMenu (){
+
+            System.out.println(
+                    "                                           MENU                                                   ");
+            System.out.println(
+                    "                                   "+MARule.ruleSet+"                                             ");
+            System.out.println(
+                    " -------------------------------------------------------------------------------------------------");
+            System.out.println(
+                    "|  1: CHESS BOX Pattern                                                                           |");
+            System.out.println(
+                    "|  2: STEPS BOX Pattern                                                                           |");
+            System.out.println(
+                    "|  3: TWO SIDED PYRAMID Pattern                                                                   |");
+            System.out.println(
+                    "|  4: MOBILE AUTOMATA Pattern - 1                                                                 |");
+            System.out.println(
+                    "|  5: MOBILE AUTOMATA Pattern - 2                                                                 |");
+            System.out.println(
+                    "|  6: TRIANGLE pattern                                                                            |");
+            System.out.println(
+                    "|  7: DISPLAY the frames                                                                          |");
+            System.out.println(
+                    "|  8: Quit � Allow the user to exit from the program                                              |");
+            System.out.println(
+                    " -------------------------------------------------------------------------------------------------");
+            System.out.println("");
+
+
+    }
+
+    public static void threadCall (){
+
+        boolean done = false;
+        MAFrameSet frameset = new MAFrameSet();
+        Scanner scan;
+        Scanner scan2;
+        Scanner sc;
+        int delay =1;
+        String option = "6";
+        int numberofFrames = 10;
+
+        while(!done){
+
+            ruleMenu();
+
+
+            try {
+                System.out.println("Please enter the options");
+                sc = new Scanner(System.in);
+                option = sc.nextLine();
+
+
+
+                switch (option) {
+                    case "1":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("CHESS"),delay);
+                        break;
+                    case "2":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("STEPS"),delay);
+                        break;
+                    case "3":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("PYRAMID"),delay);
+                        break;
+                    case "4":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("MOBILE"),delay);
+                        break;
+                    case "5":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("MOBILE2"),delay);
+                        break;
+                    case "6":
+                        System.out.println("Please enter the number of frames");
+                        scan = new Scanner(System.in);
+                        numberofFrames = scan.nextInt();
+                        System.out.println("Please enter delay");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.insertFrame(numberofFrames, new MARule("TRIANGLE"),delay);
+                        break;
+                    case "7":
+                        System.out.println("Please enter the number of frames");
+                        scan2 = new Scanner(System.in);
+                        delay = scan2.nextInt();
+                        frameset.displayGUI(numberofFrames);
+                        break;
+                    case "8":
+                        System.out.println(".....................................");
+                        System.out.println(":      Quiting the program          :");
+                        System.out.println(".....................................");
+                        frameset.framearray.clear();
+                        done = true;
+                        break;
+                    default:
+                        System.out.println("ERROR - Incorrect Option \"" + option + "\" has been selected");
+                        System.out.println("");
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.println("ERROR - Invalid input from the user");
+                break;
+            }
+
+        }
+
+    }
 
 
     public static void main(String[] args) {
 
 
-        MAFrameSet frames = new MAFrameSet ();
-        System.out.println("Rule list");
-        System.out.println(MARule.ruleSet);
 
-
-        MARule chessrule = new MARule("CHESS");
-        frames.insertFrame(8,chessrule);
-        frames.displayGUI(8);
-
-
-
-       MARule steprule = new MARule("STEPS");
-       frames.insertFrame(20,steprule);
-       frames.displayGUI(20);
-
-
-
-
-        MARule pyramidrule = new MARule("PYRAMID");
-        frames.insertFrame(11,pyramidrule);
-        frames.displayGUI(11);
-
-
-
-
-        MARule mobilerule = new MARule("MOBILE");
-        frames.insertFrame(8,mobilerule);
-        frames.displayGUI(8);
-
-
-
-
-        MARule mobilerule2 = new MARule("MOBILE2");
-        frames.insertFrame(10,mobilerule2);
-        frames.displayGUI(10);
-
-
-
-
+        threadCall();
+        System.out.println("Ending the program");
 
 
 

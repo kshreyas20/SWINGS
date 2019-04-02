@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class MARule  {
 
-    public final static ArrayList<String> ruleSet = new ArrayList<>(Arrays.asList("CHESS", "STEPS", "PYRAMID", "MOBILE", "MOBILE2")); // RULE list which Frame Set will use to display the
+    public final static ArrayList<String> ruleSet = new ArrayList<>(Arrays.asList("CHESS", "STEPS", "PYRAMID", "MOBILE", "MOBILE2","TRIANGLE")); // RULE list which Frame Set will use to display the
     private String rule; // FrameSet use this variable select the rule type
     private String [] state; //  Once the Rule is selcted -> Privately State are allocated. Currently we are dealing with COLOUR of the cells
 
@@ -72,6 +72,9 @@ public class MARule  {
         else if(rule.equals("MOBILE2")){
             this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
         }
+        else if(rule.equals("TRIANGLE")){
+            this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
+        }
         else{
             this.state = new String [] {rulestate.getColours().get(1)}; // Only BLACK Colour is assigned if there are no Rule
         }
@@ -101,6 +104,10 @@ public class MARule  {
         else if(this.rule.equals("MOBILE2")){
 
             newframe=mobileRule2(frame,iteration);
+        }
+        else if(this.rule.equals("TRIANGLE")){
+
+            newframe=triangleRule(frame,iteration);
         }
         else {
             newframe= frame;
@@ -233,7 +240,7 @@ public class MARule  {
 
         // Create Random Grid pattern for mobile automata -> WHITE and YELLOW pattern
 
-    private void randomGridGenrator(MAFrame frame){
+    public  void randomGridGenrator(MAFrame frame){
 
         Random random = new Random();
         for (int i = 0; i < frame.getRow() + 1; i++) {
@@ -261,7 +268,10 @@ public class MARule  {
         if(iteration == 0) {
 
             randomGridGenrator(frame);
-            frame.getCell(0,frame.getColumn()/2).setColour(this.state[1]);
+            Random random = new Random();
+            int value = random.nextInt(frame.getColumn());
+           // frame.getCell(0,frame.getColumn()/2).setColour(this.state[1]);
+            frame.getCell(0,value).setColour(this.state[1]);
         }
 
         else {
@@ -486,6 +496,45 @@ public class MARule  {
 
         System.out.println(position[0]+" "+position[1]);
         return position;
+    }
+
+    private MAFrame triangleRule (MAFrame frame,int iteration) {
+
+
+        if(iteration == 0) {
+
+            randomGridGenrator(frame);
+            frame.getCell(0,frame.getColumn()/2).setTextfield("X"); // First Row Cells are selected by default
+        }
+
+        else {
+
+            for (int i = iteration-1; i < iteration; i++) {
+                for (int j = 0; j < frame.getColumn(); j++) {
+
+                    System.out.println("Cell ==>" + i + " " + j);
+                    if ((frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && frame.getCell(i, j-1).getTextfield() == "NONE") || (frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && frame.getCell(i, j+1).getTextfield() == "NONE")  ) {
+                        System.out.println("Insert ==>" + i + " " + j);
+                        if(j == 0){
+                            frame.getCell(i+1,j).setTextfield("X");
+                            frame.getCell(i+1,j+1).setTextfield("X");
+                        }
+                        else if (j == frame.getColumn()-1)
+                        {
+                            frame.getCell(i+1,j-1).setTextfield("X");
+                            frame.getCell(i+1,j).setTextfield("X");
+                        }
+                        else {
+                            frame.getCell(i + 1, j - 1).setTextfield("X");
+                            frame.getCell(i + 1, j).setTextfield("X");
+                            frame.getCell(i + 1, j + 1).setTextfield("X");
+                        }
+                    }
+
+                }
+            }
+        }
+        return frame;
     }
 
 
