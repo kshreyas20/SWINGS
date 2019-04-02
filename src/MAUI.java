@@ -6,8 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * A Test application for the Wolfram Celular Autonomon application
@@ -27,14 +26,20 @@ public class MAUI extends MAApp {
     protected JButton startBtn ;
     protected JButton stopBtn ;
     private MACanvas maPanel ;
+    private JTextField DelayHeading;
+    private JTextField TextFieldValue;
+    private JComboBox ComboBoxRule;
+    private Thread threadframset;
+    private MAFrameSet ma;
+    private MACanvas mc;
 
     /**
      * Sample app constructor
      */
     public MAUI() {
-        frame.setSize(600, 600);
+        frame.setSize(500, 400);
         frame.setTitle("UIApp");
-
+        frame.add(getNorthPanel(),BorderLayout.NORTH);
         menuMgr.createDefaultActions(); // Set up default menu items
 
         showUI(); // Cause the Swing Dispatch thread to display the JFrame
@@ -53,6 +58,23 @@ public class MAUI extends MAApp {
         stopBtn.addActionListener(this);
         northPanel.add(stopBtn);
 
+        DelayHeading = new JTextField("Delay");
+        DelayHeading.setEditable(false);
+        northPanel.add(DelayHeading);
+        TextFieldValue = new JTextField(10);
+        TextFieldValue.addActionListener(this);
+        // TextField.setBounds(1,1,30,3);   ===> Need to insert try catch block to only take interger greater than 1 and less than 100
+        northPanel.add(TextFieldValue);
+
+        ComboBoxRule = new JComboBox();
+        for ( int i=0;i< MARule.ruleSet.size();i++){
+            System.out.println(MARule.ruleSet.get(i));
+            ComboBoxRule.addItem(MARule.ruleSet.get(i));
+            // ===> Add listener which Rule u selected
+        }
+        ComboBoxRule.addActionListener(this);
+        northPanel.add(ComboBoxRule);
+
         return northPanel;
     }
 
@@ -64,10 +86,22 @@ public class MAUI extends MAApp {
     @Override
     public void actionPerformed(ActionEvent ae) {
         log.info("We received an ActionEvent " + ae);
-        if (ae.getSource() == startBtn)
+        if (ae.getSource() == startBtn) {
             System.out.println("Start pressed");
-        else if (ae.getSource() == stopBtn)
+            ma = new MAFrameSet();
+            mc = new MACanvas();
+            ma.addObserver(mc);
+            threadframset = new Thread(ma);
+            threadframset.start();
+        }
+        else if (ae.getSource() == stopBtn) {
             System.out.println("Stop pressed");
+           // threadframset.
+        }
+
+        else if (ae.getSource() == ComboBoxRule) {
+            System.out.println("Combo pressed");
+        }
     }
 
     @Override
@@ -116,12 +150,11 @@ public class MAUI extends MAApp {
     }
 
     /**
-     * Sample MAUI application starting point
+     * Sample Wolf application starting point
      * @param args
      */
     public static void main(String[] args) {
         MAUI wapp = new MAUI();
-        wapp.getNorthPanel();
         log.info("WolfApp started");
     }
 

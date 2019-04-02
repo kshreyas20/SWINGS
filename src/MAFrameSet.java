@@ -14,17 +14,19 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.util.InputMismatchException;
+import java.util.Observable;
 import java.util.Scanner;
-import java.io.IOException;
-import java.io.PrintStream;
 
 
-public class MAFrameSet {
+
+public class MAFrameSet extends Observable implements Runnable{
 
     private ArrayList<MAFrame> framearray = new ArrayList<>(); // List to hold the frame -> This can be used to
     private static int yaxis = 0; // Position of GUI index
     private static int xaxis = 0; // Position of GUI index
-
+    private MARule rule;
+    private int delay;
+    private int numberofFrames;
 
 
     /*
@@ -154,13 +156,14 @@ public class MAFrameSet {
 
                 this.framearray.add(new MAFrame(numberOfFrame, numberOfFrame));
 
-                for (int i = 0; i < numberOfFrame; i++) {
+                for (int  i = 0; i < numberOfFrame; i++) {
                     MAFrame frame = rule.getNewframe(this.framearray.get(i), i);
                     MAFrame newframe = new MAFrame(numberOfFrame, numberOfFrame);
                     newframe.setCells(frame.getCells());
                     this.framearray.add(newframe);
+                    doAction(i);
                     System.out.println("frames" + i);
-                   // this.view(this.framearray.get(i));
+                  //  this.view(this.framearray.get(i));
                     Thread.sleep(1000*delay);
                 }
             }
@@ -227,10 +230,19 @@ public class MAFrameSet {
 
     }
 
-    public static void threadCall (){
+
+    public void doAction(int i) { // tell our subscribing friends
+        setChanged();
+        notifyObservers(this.framearray.get(i));
+        System.out.println("Sent Notification to Canvas");
+
+    }
+
+
+    @Override
+    public void run() {
 
         boolean done = false;
-        MAFrameSet frameset = new MAFrameSet();
         Scanner scan;
         Scanner scan2;
         Scanner sc;
@@ -258,7 +270,7 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("CHESS"),delay);
+                        this.insertFrame(numberofFrames, new MARule("CHESS"),delay);
                         break;
                     case "2":
                         System.out.println("Please enter the number of frames");
@@ -267,7 +279,7 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("STEPS"),delay);
+                        this.insertFrame(numberofFrames, new MARule("STEPS"),delay);
                         break;
                     case "3":
                         System.out.println("Please enter the number of frames");
@@ -276,7 +288,7 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("PYRAMID"),delay);
+                        this.insertFrame(numberofFrames, new MARule("PYRAMID"),delay);
                         break;
                     case "4":
                         System.out.println("Please enter the number of frames");
@@ -285,7 +297,7 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("MOBILE"),delay);
+                        this.insertFrame(numberofFrames, new MARule("MOBILE"),delay);
                         break;
                     case "5":
                         System.out.println("Please enter the number of frames");
@@ -294,7 +306,7 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("MOBILE2"),delay);
+                        this.insertFrame(numberofFrames, new MARule("MOBILE2"),delay);
                         break;
                     case "6":
                         System.out.println("Please enter the number of frames");
@@ -303,19 +315,19 @@ public class MAFrameSet {
                         System.out.println("Please enter delay");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.insertFrame(numberofFrames, new MARule("TRIANGLE"),delay);
+                        this.insertFrame(numberofFrames, new MARule("TRIANGLE"),delay);
                         break;
                     case "7":
                         System.out.println("Please enter the number of frames");
                         scan2 = new Scanner(System.in);
                         delay = scan2.nextInt();
-                        frameset.displayGUI(numberofFrames);
+                        this.displayGUI(numberofFrames);
                         break;
                     case "8":
                         System.out.println(".....................................");
                         System.out.println(":      Quiting the program          :");
                         System.out.println(".....................................");
-                        frameset.framearray.clear();
+                        this.framearray.clear();
                         done = true;
                         break;
                     default:
@@ -330,19 +342,23 @@ public class MAFrameSet {
             }
 
         }
-
     }
+
 
 
     public static void main(String[] args) {
 
-
-
-        threadCall();
+        MAFrameSet ma = new MAFrameSet();
+        MACanvas mc = new MACanvas();
+        ma.addObserver(mc);
+        Thread threadA = new Thread(ma);
+        threadA.start();
+        //ma.run();
         System.out.println("Ending the program");
 
 
 
     }
+
 
 }
