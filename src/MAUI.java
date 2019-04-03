@@ -14,16 +14,19 @@ import javax.swing.*;
  */
 public class MAUI extends MAApp {
 
-    private static Logger log = Logger.getLogger(WolfApp.class.getName());
+    private static Logger log = Logger.getLogger(MAUI.class.getName());
     protected JPanel northPanel ;
     protected JButton startBtn ;
     protected JButton stopBtn ;
-    private MACanvas maPanel ;
-    private JTextField DelayHeading;
-    private JTextField TextFieldValue;
-    private JTextField NumberofFrames;
-    private JTextField TextFieldFrames;
-    private JComboBox ComboBoxRule;
+    protected JButton PauseBtn;
+    protected JButton ResumeBtn;
+    protected JButton RewindBtn;
+    protected MACanvas maPanel ;
+    protected JTextField DelayHeading;
+    protected JTextField TextFieldValue;
+    protected JTextField NumberofFrames;
+    protected JTextField TextFieldFrames;
+    protected JComboBox ComboBoxRule;
     private Thread threadframset;
     private MAFrameSet ma;
 
@@ -53,6 +56,18 @@ public class MAUI extends MAApp {
         stopBtn = new JButton("Stop"); // Allow the app to hear about button pushes
         stopBtn.addActionListener(this);
         northPanel.add(stopBtn);
+
+        PauseBtn = new JButton("Pause");
+        PauseBtn.addActionListener(this);
+        northPanel.add(PauseBtn);
+
+        ResumeBtn = new JButton("Resume");
+        ResumeBtn.addActionListener(this);
+        northPanel.add(ResumeBtn);
+
+        RewindBtn = new JButton("Rewind");
+        RewindBtn.addActionListener(this);
+        northPanel.add(RewindBtn);
 
         DelayHeading = new JTextField("Delay");
         DelayHeading.setEditable(false);
@@ -93,19 +108,27 @@ public class MAUI extends MAApp {
         String rulelocal = ComboBoxRule.getSelectedItem().toString();
         int delay = Integer.parseInt(TextFieldValue.getText());
         int numerofFrames = Integer.parseInt(TextFieldFrames.getText());
-        System.out.println(rulelocal+" "+delay);
+        System.out.println(rulelocal + " " + delay);
         if (ae.getSource() == startBtn) {
             System.out.println("Start pressed");
-            ma = new MAFrameSet(new MARule(rulelocal),delay,numerofFrames);
+            ma = new MAFrameSet(new MARule(rulelocal), delay, numerofFrames);
             ma.addObserver(this.maPanel);
             threadframset = new Thread(ma);
             threadframset.start();
-        }
-        else if (ae.getSource() == stopBtn) {
+        } else if (ae.getSource() == stopBtn) {
             System.out.println("Stop pressed");
             threadframset.interrupt();
+        } else if (ae.getSource() == PauseBtn) {
+            System.out.println("pause pressed");
+            ma.suspend();
+        }  else if (ae.getSource() == ResumeBtn) {
+            System.out.println("resume pressed");
+            ma.resume();
         }
-
+         else if (ae.getSource() == RewindBtn) {
+            System.out.println("rewind pressed");
+            ma.rewind();
+        }
     }
 
     @Override
