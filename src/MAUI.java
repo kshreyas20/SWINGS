@@ -1,7 +1,6 @@
 //package edu.neu.csye6200.uia5;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
@@ -16,28 +15,24 @@ import javax.swing.*;
 public class MAUI extends MAApp {
 
     private static Logger log = Logger.getLogger(WolfApp.class.getName());
-    /*
-        protected JPanel northPanel = null;
-        protected JButton startBtn = null;
-        protected JButton stopBtn = null;
-        private MACanvas maPanel = null;
-    */
     protected JPanel northPanel ;
     protected JButton startBtn ;
     protected JButton stopBtn ;
     private MACanvas maPanel ;
     private JTextField DelayHeading;
     private JTextField TextFieldValue;
+    private JTextField NumberofFrames;
+    private JTextField TextFieldFrames;
     private JComboBox ComboBoxRule;
     private Thread threadframset;
     private MAFrameSet ma;
-    private MACanvas mc;
+
 
     /**
      * Sample app constructor
      */
     public MAUI() {
-        frame.setSize(500, 400);
+        frame.setSize(800, 400);
         frame.setTitle("UIApp");
         frame.add(getNorthPanel(),BorderLayout.NORTH);
         menuMgr.createDefaultActions(); // Set up default menu items
@@ -47,6 +42,7 @@ public class MAUI extends MAApp {
 
 
     public JPanel getNorthPanel() {
+        System.out.println("Jpanel North");
         northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
 
@@ -63,8 +59,16 @@ public class MAUI extends MAApp {
         northPanel.add(DelayHeading);
         TextFieldValue = new JTextField(10);
         TextFieldValue.addActionListener(this);
-        // TextField.setBounds(1,1,30,3);   ===> Need to insert try catch block to only take interger greater than 1 and less than 100
         northPanel.add(TextFieldValue);
+
+        NumberofFrames = new JTextField("NumberofFrames");
+        NumberofFrames.setEditable(false);
+        northPanel.add(NumberofFrames);
+        TextFieldFrames = new JTextField(10);
+        TextFieldFrames.addActionListener(this);
+
+        // TextField.setBounds(1,1,30,3);   ===> Need to insert try catch block to only take interger greater than 1 and less than 100
+        northPanel.add(TextFieldFrames);
 
         ComboBoxRule = new JComboBox();
         for ( int i=0;i< MARule.ruleSet.size();i++){
@@ -86,22 +90,22 @@ public class MAUI extends MAApp {
     @Override
     public void actionPerformed(ActionEvent ae) {
         log.info("We received an ActionEvent " + ae);
+        String rulelocal = ComboBoxRule.getSelectedItem().toString();
+        int delay = Integer.parseInt(TextFieldValue.getText());
+        int numerofFrames = Integer.parseInt(TextFieldFrames.getText());
+        System.out.println(rulelocal+" "+delay);
         if (ae.getSource() == startBtn) {
             System.out.println("Start pressed");
-            ma = new MAFrameSet();
-            mc = new MACanvas();
-            ma.addObserver(mc);
+            ma = new MAFrameSet(new MARule(rulelocal),delay,numerofFrames);
+            ma.addObserver(this.maPanel);
             threadframset = new Thread(ma);
             threadframset.start();
         }
         else if (ae.getSource() == stopBtn) {
             System.out.println("Stop pressed");
-           // threadframset.
+            threadframset.interrupt();
         }
 
-        else if (ae.getSource() == ComboBoxRule) {
-            System.out.println("Combo pressed");
-        }
     }
 
     @Override
@@ -155,7 +159,7 @@ public class MAUI extends MAApp {
      */
     public static void main(String[] args) {
         MAUI wapp = new MAUI();
-        log.info("WolfApp started");
+        log.info("MAUI started");
     }
 
 
