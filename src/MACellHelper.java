@@ -11,9 +11,11 @@ cell instant  variable .
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class MACellHelper {
 
+    private static Logger log = Logger.getLogger(MACellHelper.class.getName());
     private final ArrayList<String> shapes;  // List of shapes cell can take.
     private final ArrayList<String> colours; // List of colours cell can portray
     private final ArrayList<String> shades; // List of scales cell can project
@@ -21,7 +23,7 @@ public class MACellHelper {
     // Default constructor to define the list which limit the state of the Cell class
 
     public MACellHelper() {
-
+        log.info("MAHelper Constructor is used to decided the state of the Cell");
         this.shapes = new ArrayList<>(Arrays.asList("SQUARE"));
         this.colours = new ArrayList<>(Arrays.asList("WHITE", "BLACK", "RED", "GREEN", "BLUE", "YELLOW"));
         this.shades = new ArrayList<>(Arrays.asList("BRIGHT", "DARK", "NEUTRAL"));

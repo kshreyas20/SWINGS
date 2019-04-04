@@ -6,8 +6,10 @@ Cell Class is to define the blue print of the individual cell - Imagining Cell a
 Note :  States are restricted by MACellHelper Class
 */
 
-public class Cell {
+import java.util.logging.Logger;
 
+public class Cell {
+    private static Logger log = Logger.getLogger(Cell.class.getName());
     private static final MACellHelper cellhelp = new MACellHelper();// Before assigning the value to the cell state - Helper Object has to be created static - this can be used by all the cell
     private String shape; // Currently only Square button is supported in Jbutton  Hence restricted by helperClass to take only SQUARE
     private String colour; // Colours are Restricted by helper calls to take only restricted colours defined in MAHelper class
@@ -20,6 +22,7 @@ public class Cell {
     // User defined Constructor for any Cell creation -> Value is restricted by MACellHelper class
 
     public Cell(String shape, String colour, String shade, String textfield, boolean effects) {
+        log.info("Custom Cell Created");
         setShape(shape);
         setColour(colour);
         setShade(shade);
@@ -43,6 +46,7 @@ public class Cell {
     */
 
     public Cell() {
+        log.info("Default Cell Created");
         this.colour = cellhelp.getColours().get(1);
         this.shape = cellhelp.getShapes().get(0);
         this.shade = cellhelp.getShades().get(2);
@@ -66,6 +70,7 @@ public class Cell {
             this.shape = shape;
         }
         else{
+            log.warning("Default Shape used SQUARE");
             this.shape = cellhelp.getShapes().get(0);
         }
     }
@@ -86,6 +91,7 @@ public class Cell {
             this.colour = colour;
         }
         else{
+            log.warning("Default Colour is used Black");
             this.colour = cellhelp.getColours().get(1);
         }
     }
@@ -105,6 +111,7 @@ public class Cell {
             this.shade = shade;
         }
         else{
+            log.warning("Default Shade is used NEUTRAL");
             this.shade = cellhelp.getShades().get(2);
         }
     }
@@ -123,6 +130,7 @@ public class Cell {
             this.textfield = textfield;
         }
         else{
+            log.warning("Text is more than 5 Letters");
             this.textfield = "NONE";
         }
 

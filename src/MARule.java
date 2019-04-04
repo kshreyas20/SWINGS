@@ -26,6 +26,7 @@ In Mobile AutoMata =
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class MARule  {
@@ -57,26 +58,35 @@ public class MARule  {
     private void setState(String rule)
     {
         MACellHelper rulestate = new MACellHelper();
-        if(rule.equals("CHESS")){
-            this.state = new String [] {rulestate.getColours().get(1),rulestate.getColours().get(0)}; // BLACK and WHITE Colour
-        }
-        else if (rule.equals("STEPS")){
-            this.state = new String [] {rulestate.getColours().get(1),rulestate.getColours().get(4),rulestate.getColours().get(0)}; // BLUE for steps WHITE for Non steps default BLACK colour is assigned
-        }
-        else if(rule.equals("PYRAMID")){
-            this.state = new String [] {rulestate.getColours().get(2),rulestate.getColours().get(1)}; // RED is used to build the pyramid and BLACK as default background
-        }
-        else if(rule.equals("MOBILE")){
-            this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by BLACK cells
-        }
-        else if(rule.equals("MOBILE2")){
-            this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
-        }
-        else if(rule.equals("TRIANGLE")){
-            this.state = new String [] {rulestate.getColours().get(0),rulestate.getColours().get(1),rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
-        }
-        else{
-            this.state = new String [] {rulestate.getColours().get(1)}; // Only BLACK Colour is assigned if there are no Rule
+        switch (rule) {
+            case "CHESS":
+                this.state = new String[]{rulestate.getColours().get(1), rulestate.getColours().get(0)}; // BLACK and WHITE Colour
+
+                break;
+            case "STEPS":
+                this.state = new String[]{rulestate.getColours().get(1), rulestate.getColours().get(4), rulestate.getColours().get(0)}; // BLUE for steps WHITE for Non steps default BLACK colour is assigned
+
+                break;
+            case "PYRAMID":
+                this.state = new String[]{rulestate.getColours().get(2), rulestate.getColours().get(1)}; // RED is used to build the pyramid and BLACK as default background
+
+                break;
+            case "MOBILE":
+                this.state = new String[]{rulestate.getColours().get(0), rulestate.getColours().get(1), rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by BLACK cells
+
+                break;
+            case "MOBILE2":
+                this.state = new String[]{rulestate.getColours().get(0), rulestate.getColours().get(1), rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
+
+                break;
+            case "TRIANGLE":
+                this.state = new String[]{rulestate.getColours().get(0), rulestate.getColours().get(1), rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
+
+                break;
+            default:
+                this.state = new String[]{rulestate.getColours().get(1)}; // Only BLACK Colour is assigned if there are no Rule
+
+                break;
         }
     }
 
@@ -85,32 +95,34 @@ public class MARule  {
     public MAFrame getNewframe(MAFrame frame, int iteration){
 
         MAFrame newframe;
-        if (this.rule.equals("CHESS")){
+        switch (this.rule) {
+            case "CHESS":
 
-            newframe=chessRule(frame,iteration);
-        }
-        else if(this.rule.equals("STEPS")){
+                newframe = chessRule(frame, iteration);
+                break;
+            case "STEPS":
 
-            newframe=stepRule(frame,iteration);
-        }
-        else if(this.rule.equals("PYRAMID")){
+                newframe = stepRule(frame, iteration);
+                break;
+            case "PYRAMID":
 
-            newframe=pyramidRule(frame,iteration);
-        }
-        else if(this.rule.equals("MOBILE")){
+                newframe = pyramidRule(frame, iteration);
+                break;
+            case "MOBILE":
 
-            newframe=mobileRule(frame,iteration);
-        }
-        else if(this.rule.equals("MOBILE2")){
+                newframe = mobileRule(frame, iteration);
+                break;
+            case "MOBILE2":
 
-            newframe=mobileRule2(frame,iteration);
-        }
-        else if(this.rule.equals("TRIANGLE")){
+                newframe = mobileRule2(frame, iteration);
+                break;
+            case "TRIANGLE":
 
-            newframe=triangleRule(frame,iteration);
-        }
-        else {
-            newframe= frame;
+                newframe = triangleRule(frame, iteration);
+                break;
+            default:
+                newframe = frame;
+                break;
         }
         return newframe;
     }
@@ -513,7 +525,7 @@ public class MARule  {
                 for (int j = 0; j < frame.getColumn(); j++) {
 
                     System.out.println("Cell ==>" + i + " " + j);
-                    if ((frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && frame.getCell(i, j-1).getTextfield() == "NONE") || (frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && frame.getCell(i, j+1).getTextfield() == "NONE")  ) {
+                    if ((frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && Objects.equals(frame.getCell(i, j - 1).getTextfield(), "NONE")) || (frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && Objects.equals(frame.getCell(i, j + 1).getTextfield(), "NONE"))  ) {
                         System.out.println("Insert ==>" + i + " " + j);
                         if(j == 0){
                             frame.getCell(i+1,j).setTextfield("X");

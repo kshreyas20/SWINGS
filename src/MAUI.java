@@ -35,7 +35,7 @@ public class MAUI extends MAApp {
      * Sample app constructor
      */
     public MAUI() {
-        frame.setSize(800, 400);
+        frame.setSize(1200, 600);
         frame.setTitle("UIApp");
         frame.add(getNorthPanel(),BorderLayout.NORTH);
         menuMgr.createDefaultActions(); // Set up default menu items
@@ -45,6 +45,7 @@ public class MAUI extends MAApp {
 
 
     public JPanel getNorthPanel() {
+
         System.out.println("Jpanel North");
         northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
@@ -79,18 +80,19 @@ public class MAUI extends MAApp {
         NumberofFrames = new JTextField("NumberofFrames");
         NumberofFrames.setEditable(false);
         northPanel.add(NumberofFrames);
+
         TextFieldFrames = new JTextField(10);
         TextFieldFrames.addActionListener(this);
-
-        // TextField.setBounds(1,1,30,3);   ===> Need to insert try catch block to only take interger greater than 1 and less than 100
         northPanel.add(TextFieldFrames);
 
         ComboBoxRule = new JComboBox();
+
         for ( int i=0;i< MARule.ruleSet.size();i++){
             System.out.println(MARule.ruleSet.get(i));
             ComboBoxRule.addItem(MARule.ruleSet.get(i));
-            // ===> Add listener which Rule u selected
+
         }
+
         ComboBoxRule.addActionListener(this);
         northPanel.add(ComboBoxRule);
 
@@ -104,30 +106,36 @@ public class MAUI extends MAApp {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        log.info("We received an ActionEvent " + ae);
-        String rulelocal = ComboBoxRule.getSelectedItem().toString();
-        int delay = Integer.parseInt(TextFieldValue.getText());
-        int numerofFrames = Integer.parseInt(TextFieldFrames.getText());
-        System.out.println(rulelocal + " " + delay);
-        if (ae.getSource() == startBtn) {
-            System.out.println("Start pressed");
-            ma = new MAFrameSet(new MARule(rulelocal), delay, numerofFrames);
-            ma.addObserver(this.maPanel);
-            threadframset = new Thread(ma);
-            threadframset.start();
-        } else if (ae.getSource() == stopBtn) {
-            System.out.println("Stop pressed");
-            threadframset.interrupt();
-        } else if (ae.getSource() == PauseBtn) {
-            System.out.println("pause pressed");
-            ma.suspend();
-        }  else if (ae.getSource() == ResumeBtn) {
-            System.out.println("resume pressed");
-            ma.resume();
-        }
-         else if (ae.getSource() == RewindBtn) {
-            System.out.println("rewind pressed");
-            ma.rewind();
+
+        try {
+            log.info("We received an ActionEvent " + ae);
+            String rulelocal = ComboBoxRule.getSelectedItem().toString();
+            int delay = Integer.parseInt(TextFieldValue.getText());
+            int numerofFrames = Integer.parseInt(TextFieldFrames.getText());
+            System.out.println(rulelocal + " " + delay);
+            if (ae.getSource() == startBtn) {
+                System.out.println("Start pressed");
+                ma = new MAFrameSet(new MARule(rulelocal), delay, numerofFrames);
+                ma.addObserver(this.maPanel);
+                threadframset = new Thread(ma);
+                threadframset.start();
+            } else if (ae.getSource() == stopBtn) {
+                System.out.println("Stop pressed");
+                threadframset.interrupt();
+            } else if (ae.getSource() == PauseBtn) {
+                System.out.println("pause pressed");
+                ma.suspend();
+            } else if (ae.getSource() == ResumeBtn) {
+                System.out.println("resume pressed");
+                ma.resume();
+            } else if (ae.getSource() == RewindBtn) {
+                System.out.println("rewind pressed");
+                ma.rewind();
+            }
+        }catch (NumberFormatException e){
+            log.warning("Please enter the value in delay and Numberof Frame field");
+        }catch (NullPointerException e) {
+            log.warning("Please press start button");
         }
     }
 

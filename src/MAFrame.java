@@ -7,8 +7,11 @@ Solution:
 2D Array which holds Cell Objects inside it  => Imagining MAFrame as a Frame(JFrame) this class was designed
  */
 
+import java.util.logging.Logger;
+
 public class MAFrame  {
 
+    private static Logger log = Logger.getLogger(MAFrame.class.getName());
     private int row; // Number of Rows in the cell
     private int column; // Number of Column in the cell
     private Cell[][] cells = new Cell[100][100]; // Limiting the cell limit to 200x200 for MaximumFrame
@@ -21,6 +24,7 @@ public class MAFrame  {
      */
 
     public MAFrame(int row, int column) {
+        log.info("New Frame is created");
         this.row = row;
         this.column = column;
         setCells(row,column);
@@ -34,6 +38,7 @@ public class MAFrame  {
      */
 
     public MAFrame() {
+        log.info("Default Frame is created");
         this.row = 25;
         this.column = 20;
         setCells(25,20);
@@ -68,7 +73,7 @@ public class MAFrame  {
                 }
             }
         }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Index is more than 200");
+            log.warning("Index is more than 200");
         }
 
     }
@@ -92,7 +97,7 @@ public class MAFrame  {
             this.cells[rowindex][columnindex] = cell;
         }
         catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Index is more than 200");
+            log.warning("Index is more than 200");
         }
 
     }
@@ -102,13 +107,13 @@ public class MAFrame  {
     public Cell getCell (int rowindex,int columnindex){
         try {
             if ((rowindex < 0 && rowindex >= this.row) || (columnindex < 0 && columnindex >= this.column)) {
-                System.out.println("Index is more than row and column limit or less than 0 => Sending 0=0 index value ");
+                log.warning("Index is more than row and column limit or less than 0 => Sending 0=0 index value ");
                 rowindex = 0;
                 columnindex = 0;
             }
         }
         catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Index is more than 200");
+            log.warning("Index is more than 200");
         }
         return this.cells[rowindex][columnindex];
     }
@@ -119,12 +124,12 @@ public class MAFrame  {
 
         try {
             if ((rowindex < 0 && rowindex >= this.row) || (columnindex < 0 && columnindex >= this.column)) {
-                System.out.println("Index is more than row and column limit or less than 0 ");
+                log.warning("Index is more than row and column limit or less than 0 ");
             } else {
                 System.out.println(this.cells[rowindex][columnindex]);
             }
         }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Index is more than 200");
+            log.warning("Index is more than 200");
         }
     }
 
@@ -145,7 +150,7 @@ public class MAFrame  {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Index is more than 200");
+            log.warning("Index is more than 200");
         }
     }
     // Copying each individual Cells State to new Cells

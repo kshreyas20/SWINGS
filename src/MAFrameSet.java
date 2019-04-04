@@ -10,25 +10,24 @@ Everytime for New Frame to be created old frame is passed to Rule object to get 
 
 import java.util.ArrayList;
 import java.util.Observable;
-
-
+import java.util.logging.Logger;
 
 
 public class MAFrameSet extends Observable implements Runnable{
 
+    private static Logger log = Logger.getLogger(MAFrameSet.class.getName());
     private ArrayList<MAFrame> framearray = new ArrayList<>(); // List to hold the frame -> This can be used to
-    private static int yaxis = 0; // Position of GUI index
-    private static int xaxis = 0; // Position of GUI index
     private MARule rule;
     private int delay;
     private int numberofFrames;
-    boolean suspended = false;
+    private boolean suspended = false;
     private int framecount =0;
-    boolean rewind = false;
+    private boolean rewind = false;
 
 
 
     public MAFrameSet (MARule rule,int delay,int numberofFrames){
+        log.info("New Frame Set is created");
         this.rule= rule;
         this.delay= delay;
         this.numberofFrames=numberofFrames;
@@ -39,7 +38,7 @@ public class MAFrameSet extends Observable implements Runnable{
     public void doAction(int i) { // tell our subscribing friends
         setChanged();
         notifyObservers(this.framearray.get(i));
-        System.out.println("Sent Notification to Canvas");
+        log.info("Sent Notification to Canvas");
 
     }
 
@@ -54,7 +53,7 @@ public class MAFrameSet extends Observable implements Runnable{
 
         try {
             this.framearray.clear();
-            if (this.numberofFrames < 100) {
+            if (this.numberofFrames < 100 && this.numberofFrames > 0) {
 
              if(!rewind) {
                  this.framearray.add(new MAFrame(this.numberofFrames, this.numberofFrames));
@@ -65,40 +64,51 @@ public class MAFrameSet extends Observable implements Runnable{
                      newframe.setCells(frame.getCells());
                      this.framearray.add(newframe);
                      framecount++;
-                     doAction(i);
-                     System.out.println("frames" + i);
-                     Thread.sleep(1000 * this.delay);
-                     synchronized (this) {
-                         while (suspended) {
-                             wait();
-                         }
-                     }
+                     doAction(i+1);
+                     log.info("frames" + i);
+                     checkstatus();
                      if(rewind){
                          reverse();
                          i = framecount;
                      }
-                     else{
-                         continue;
-                     }
+
                  }
              }
 
 
 
             } else {
-                System.out.println("Number of frameset selected is beyond 100");
+                log.warning("Number of frameset selected is beyond 100 or less than zero");
             }
-        } catch (InterruptedException e) {
-
-            System.out.println("Thread Sleep Interupted Exception");
+        } catch (IllegalArgumentException e){
+            log.warning("Delay can't be negative");
         }
     }
 
+    public void checkstatus(){
+
+        try {
+
+            Thread.sleep(1000 * this.delay);
+            synchronized (this) {
+                while (suspended) {
+                    wait();
+                }
+            }
+        }
+        catch (InterruptedException e) {
+
+            log.warning("Thread Sleep Interupted Exception");
+        }
+
+    }
     public void suspend() {
+        log.info("Suspended");
         suspended = true;
     }
 
     public synchronized void resume() {
+        log.info("Resumed");
         suspended = false;
         rewind = false;
         notify();
@@ -106,37 +116,26 @@ public class MAFrameSet extends Observable implements Runnable{
 
 
     public void rewind(){
-
+        log.info("Rewinded");
         rewind = true;
     }
 
 
     public void reverse(){
 
-        try {
             for (int i = framecount; i >= 0; i--) {
                 doAction(i);
-                System.out.println("frames" + i);
-                Thread.sleep(1000 * this.delay);
-                synchronized (this) {
-                    while (suspended) {
-                        wait();
-                    }
-                }
+                log.info("frames" + i);
+                checkstatus();
                 if(rewind){
                     framecount--;
-                    continue;
-
                 }
                 else{
                     break;
                 }
             }
-        }
-            catch (InterruptedException e) {
 
-            System.out.println("Thread Sleep Interupted Exception");
-        }
+
     }
 
 }
