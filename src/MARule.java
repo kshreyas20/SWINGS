@@ -1,6 +1,10 @@
 //package edu.neu.csye6200.ma;
 
 /*
+Note: Best Approach would have been create the MARule as Abstract Class and all rules extend that class
+Since the requirement is to have only one MARule class -> All rule are present inside this class and its implementation are present as method
+
+
 Create a  MARule class  which can assign a new cell based on a prior cell frame
 
 Solution:
@@ -26,12 +30,11 @@ In Mobile AutoMata =
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 public class MARule  {
 
-    public final static ArrayList<String> ruleSet = new ArrayList<>(Arrays.asList("CHESS", "STEPS", "PYRAMID", "MOBILE", "MOBILE2","TRIANGLE")); // RULE list which Frame Set will use to display the
+    public final static ArrayList<String> ruleSet = new ArrayList<>(Arrays.asList("CHESS", "STEPS", "PYRAMID", "MOBILE", "MOBILE2")); // RULE list which Frame Set will use to display the
     private String rule; // FrameSet use this variable select the rule type
     private String [] state; //  Once the Rule is selcted -> Privately State are allocated. Currently we are dealing with COLOUR of the cells
 
@@ -79,10 +82,7 @@ public class MARule  {
                 this.state = new String[]{rulestate.getColours().get(0), rulestate.getColours().get(1), rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
 
                 break;
-            case "TRIANGLE":
-                this.state = new String[]{rulestate.getColours().get(0), rulestate.getColours().get(1), rulestate.getColours().get(5)}; // YELLOW WHITE is used to create the GRID and Movement of Active cells are shown by "X" text in the cell
 
-                break;
             default:
                 this.state = new String[]{rulestate.getColours().get(1)}; // Only BLACK Colour is assigned if there are no Rule
 
@@ -116,10 +116,6 @@ public class MARule  {
 
                 newframe = mobileRule2(frame, iteration);
                 break;
-            case "TRIANGLE":
-
-                newframe = triangleRule(frame, iteration);
-                break;
             default:
                 newframe = frame;
                 break;
@@ -134,8 +130,11 @@ public class MARule  {
             for(int i=0;i<iteration+1;i++){
                 for(int j=0;j<frame.getColumn();j++){
 
-                    if(j== 0 && i > 0){
+                    if(j== 0 && i > 0 && (frame.getColumn()%2 == 0)){
                         frame.insertCell(frame.getCell(i-1, j+frame.getColumn()-1), i, j );
+                    }
+                    else if(j==0 && i > 0 && (frame.getColumn()%2 != 0)){
+                        frame.insertCell(frame.getCell(i-1, j+frame.getColumn()-2), i, j );
                     }
                     frame.insertCell(chessRuleCell(frame.getCell(i, j), i, j), i, j + 1);
                     frame.displaycell(i,j);
@@ -150,20 +149,18 @@ public class MARule  {
 
         private Cell chessRuleCell (Cell cell, int rowindex, int columnindex) {
 
+            System.out.println("Chess=>"+rowindex+" "+columnindex);
             Cell newcell = new Cell();
-            if (rowindex % 2 == 0 && columnindex == 0) {
-                newcell.setColour(this.state[1]);
-            } else if (rowindex % 2 != 0 && columnindex == 0) {
-                newcell.setColour(this.state[0]);
-            } else {
-                if (cell.getColour().equals(this.state[0])) {
+              if (cell.getColour().equals(this.state[0])) {
 
-                    newcell.setColour(this.state[1]);
-                } else {
+                  newcell.setColour(this.state[1]);
+              } else {
 
-                    newcell.setColour(this.state[0]);
-                }
-            }
+                  newcell.setColour(this.state[0]);
+              }
+
+
+            System.out.println(newcell.getColour());
             return newcell;
         }
 
@@ -509,48 +506,6 @@ public class MARule  {
         System.out.println(position[0]+" "+position[1]);
         return position;
     }
-
-    private MAFrame triangleRule (MAFrame frame,int iteration) {
-
-
-        if(iteration == 0) {
-
-            randomGridGenrator(frame);
-            frame.getCell(0,frame.getColumn()/2).setTextfield("X"); // First Row Cells are selected by default
-        }
-
-        else {
-
-            for (int i = iteration-1; i < iteration; i++) {
-                for (int j = 0; j < frame.getColumn(); j++) {
-
-                    System.out.println("Cell ==>" + i + " " + j);
-                    if ((frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && Objects.equals(frame.getCell(i, j - 1).getTextfield(), "NONE")) || (frame.getCell(i, j).getTextfield().equals(frame.getCell(0,frame.getColumn()/2).getTextfield()) && Objects.equals(frame.getCell(i, j + 1).getTextfield(), "NONE"))  ) {
-                        System.out.println("Insert ==>" + i + " " + j);
-                        if(j == 0){
-                            frame.getCell(i+1,j).setTextfield("X");
-                            frame.getCell(i+1,j+1).setTextfield("X");
-                        }
-                        else if (j == frame.getColumn()-1)
-                        {
-                            frame.getCell(i+1,j-1).setTextfield("X");
-                            frame.getCell(i+1,j).setTextfield("X");
-                        }
-                        else {
-                            frame.getCell(i + 1, j - 1).setTextfield("X");
-                            frame.getCell(i + 1, j).setTextfield("X");
-                            frame.getCell(i + 1, j + 1).setTextfield("X");
-                        }
-                    }
-
-                }
-            }
-        }
-        return frame;
-    }
-
-
-
 }
 
 

@@ -39,9 +39,9 @@ public class MAFrame  {
 
     public MAFrame() {
         log.info("Default Frame is created");
-        this.row = 25;
-        this.column = 20;
-        setCells(25,20);
+        this.row = 50;
+        this.column = 40;
+        setCells(50,40);
         setFramecount();
     }
 

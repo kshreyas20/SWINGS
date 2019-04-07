@@ -22,7 +22,7 @@ public class Cell {
     // User defined Constructor for any Cell creation -> Value is restricted by MACellHelper class
 
     public Cell(String shape, String colour, String shade, String textfield, boolean effects) {
-        log.info("Custom Cell Created");
+      //  log.info("Custom Cell Created");
         setShape(shape);
         setColour(colour);
         setShade(shade);
@@ -33,20 +33,12 @@ public class Cell {
     }
 
 
-    /* Default Constructor for any Cell creation -> This is used when Initial Frame is created -> BLACK SCREEN this how it would look like
+    // Default Constructor for any Cell creation -> This is used when Initial Frame is created -> BLACK SCREEN this how it would look like
+
+
 
     public Cell() {
-        this.colour = "BLACK";
-        this.shape = "SQUARE";
-        this.shade = "NEUTRAL";
-        this.textfield = "NONE";
-        this.effects = false;
-        counter();
-    }
-    */
-
-    public Cell() {
-        log.info("Default Cell Created");
+    //    log.info("Default Cell Created");
         this.colour = cellhelp.getColours().get(1);
         this.shape = cellhelp.getShapes().get(0);
         this.shade = cellhelp.getShades().get(2);

@@ -24,7 +24,7 @@ public class MACellHelper {
 
     public MACellHelper() {
         log.info("MAHelper Constructor is used to decided the state of the Cell");
-        this.shapes = new ArrayList<>(Arrays.asList("SQUARE"));
+        this.shapes = new ArrayList<>(Arrays. asList("SQUARE"));
         this.colours = new ArrayList<>(Arrays.asList("WHITE", "BLACK", "RED", "GREEN", "BLUE", "YELLOW"));
         this.shades = new ArrayList<>(Arrays.asList("BRIGHT", "DARK", "NEUTRAL"));
     }
